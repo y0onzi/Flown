@@ -1,4 +1,4 @@
-const buyerDao = require('../models/Buyer');
+const buyerDao = require('../../models/Buyer');
 
 const userController = {
 

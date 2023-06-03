@@ -1,6 +1,6 @@
 //searchController.js
 
-const searchModel = require('../models/searchModel');
+const searchModel = require('../../models/searchModel');
 
 exports.getSearchPage = (req, res) => {
   res.render('searchView', { cities: searchModel.getCities() });
