@@ -44,4 +44,8 @@ exports.getSellerMypage = (req, res) => {
     });
   };
   
-  
+  // 개별 판매자의 마이페이지 렌더링
+exports.renderMyPage = (req, res) => {
+  // 개별 판매자의 마이페이지를 표시하거나 필요한 로직 수행
+  res.render('seller/mypage');
+};
