@@ -11,6 +11,12 @@ app.set('port', process.env.PORT || 3000);
 const database = require('./database/database');
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
+
+
+const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
+app.use('/search', searchRouter);  // 가게 검색 라우터
+
+
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
@@ -76,6 +82,7 @@ app.use('/seller/flowers', flowersRouter);
 
 //--------------------------------------------
 // 판매자 상품 목록 조회 (상품 관리 페이지로 이동)
+
 app.get('/seller/flowers', ensureAuthenticated, flowersController.getFlowers);
 
 // 상품 등록 페이지로 이동

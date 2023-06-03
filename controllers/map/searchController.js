@@ -1,77 +1,31 @@
-//searchController.js
-
 const searchModel = require('../../models/searchModel');
 
-exports.getSearchPage = (req, res) => {
-  res.render('searchView', { cities: searchModel.getCities() });
+// 검색 페이지 렌더링
+exports.renderSearchPage = (req, res) => {
+  // 이 부분에서 (시,도), (시,군,구), (읍,면,동)을 가져와서 뷰에 전달
+  const cities = ['서울', '경기도', '부산광역시' ]; 
+  const districts = {
+    '서울': ['마포구', '성북구', '관악구'],
+    '경기도': ['수원시', '용인시', '성남시'],
+    '부산광역시': ['해운대구', '사하구', '연제구']
+  };
+  const neighborhoods = {
+    '마포구': ['합정동', '망원동', '상암동'],
+    '성북구': ['돈암동', '길음동', '보문동'],
+    '송파구': ['잠실2동', '잠실본동', '가락본동']
+  };
+
+  res.render('searchView', { cities, districts, neighborhoods });
 };
 
-exports.getRegions = (req, res) => {
-  const city = req.query.city;
-  const regions = searchModel.getRegions(city);
-  res.json({ regions });
-};
-
-exports.getLocations = (req, res) => {
-  const region = req.query.region;
-  const locations = searchModel.getLocations(region);
-  res.json({ locations });
-};
-
-exports.searchStores = (req, res) => {
-  const city = req.body.city;
-  const region = req.body.region;
-  const location = req.body.location;
-
-  const stores = searchModel.searchStores(city, region, location);
-  res.render('searchView', { cities: searchModel.getCities(), stores });
-};
-
-
-// restart
-
-const searchModel = require('../models/searchModel');
-
-exports.getSearchPage = async (req, res) => {
-  try {
-    const cities = await searchModel.getCities();
-    res.render('searchView', { cities: cities, regions: [], locations: [], stores: [] });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve cities' });
-  }
-};
-
-exports.getRegions = async (req, res) => {
-  const city = req.query.city;
+exports.getSearchResults = async (req, res) => {
+  const { city, district, neighborhood } = req.body;
 
   try {
-    const regions = await searchModel.getRegions(city);
-    res.json(regions);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve regions' });
-  }
-};
-
-exports.getLocations = async (req, res) => {
-  const region = req.query.region;
-
-  try {
-    const locations = await searchModel.getLocations(region);
-    res.json(locations);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve locations' });
-  }
-};
-
-exports.searchStores = async (req, res) => {
-  const city = req.body.city;
-  const region = req.body.region;
-  const location = req.body.location;
-
-  try {
-    const stores = await searchModel.searchStores(city, region, location);
-    res.render('searchView', { cities: [], regions: [], locations: [], stores: stores });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to search stores' });
+    const results = await searchModel.getSearchResults(city, district, neighborhood);
+    res.render('searchResultsView', { shops: results });
+  } catch (err) {
+    console.error('검색 결과 조회 오류:', err);
+    res.status(500).send('검색 결과를 가져오는 도중에 오류가 발생했습니다.');
   }
 };
