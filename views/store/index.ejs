@@ -1,0 +1,69 @@
+<!-- store.ejs-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flown</title>
+  <link rel="stylesheet" href="../../public/css/bouqet.css">
+</head>
+<body>
+  <header>
+    <!-- 가게 정보 표시 -->
+    <h1><strong>가게명:</strong> <%= storeName %></h1>
+    <p><strong>가게 전화번호:</strong> <%= storePhoneNumber %></p>
+    <p><strong>가게 주소:</strong> <%= storeAddress %></p>
+    <p><strong>별점:</strong> <%= storeRating %></p>
+    <p><strong>영업상태:</strong> <%= storeStatus %></p>
+  </header>
+
+  <main>
+    <!-- 각 페이지의 내용이 들어갈 자리 -->
+    <table class="table">
+  <tbody>
+      <tr>
+          <th>이름</th>
+          <th>가격</th>
+          <th>사진</th>
+      </tr>
+      <% for (let i = 0; i < flowers.length; i++) { %>
+        <tr>
+          <td><%= flowers[i].name %></td>
+          <td><%= flowers[i].price %></td>
+          <td><%= flowers[i].photo %></td>
+          <td>
+            <button class="add-to-bouquet" data-product-id="<%= flowers[i].flower_id %>">꽃다발에 추가</button>
+            <%console.log(flowers[i].flower_id) %>
+          </td>
+        </tr>
+      <% } %>
+  </tbody>
+</table>
+  </main>
+
+  <!-- 클라이언트 측 JavaScript 코드 -->
+<script>
+  // 장바구니에 추가 버튼 클릭 시 모달 팝업 표시
+  const addToBouquetButtons = document.querySelectorAll('.add-to-bouquet');
+  addToBouquetButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const productId = event.target.dataset.productId;
+      // productIds 배열에 상품 ID가 저장되어 있음
+      console.log("@@@" + productId); // 배열 형태의 상품 ID 출력 예시
+      openModal(productId);
+    });
+  });
+
+  // 모달 팝업 열기
+  function openModal(productId) {
+    // 모달 팝업을 열고 상품 ID를 전달하여 수량 조절 및 장바구니 추가 기능을 구현
+    // ... 모달 팝업 열기 및 상품 ID 전달하는 코드 작성 ...
+  }
+</script>
+
+
+
+<footer>
+  <!-- 푸터 내용 -->
+  <p>&copy; 2023 Flown. All rights reserved.</p>
+</footer>
+</body>
+</html>
