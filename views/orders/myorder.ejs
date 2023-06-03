@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Order Details</h1>
+  <table>
+    <tr>
+      <th>주문번호</th>
+      <th>총 결제 금액</th>
+      <th>주문일자</th>
+      <th>예상 수령일</th>
+      <th>주문서</th>
+      <th>주문상태</th>
+    </tr>
+    <% orders.forEach(function(order) { %>
+      <tr>
+        <td><%= order.order_id %></td>
+        <td><%= order.bouquetPrice %></td>
+        <td><%= order.orderDate %></td>
+        <td><%= order.pickUpDate %></td>
+        <td><a href="">보기</a></td>
+        <td><%= order.orderStatus %></td>
+      </tr>
+    <% }); %>
+  </table>
+</body>
+</html>
+
