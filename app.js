@@ -11,6 +11,12 @@ app.set('port', process.env.PORT || 3000);
 const database = require('./database/database');
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
+
+
+const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
+app.use('/search', searchRouter);  // 가게 검색 라우터
+
+
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
