@@ -59,7 +59,7 @@ const { saveSellerIdToSession, ensureAuthenticated } = require('./middlewares/au
 const noticesController = require('././controllers/seller/notices.controller');
 const ordersController = require('././controllers/seller/orders.controller'); 
 const flowersController = require('././controllers/seller/flowers.controller'); 
-const storeController = require('././controllers/seller/store.controller'); 
+//const storeController = require('././controllers/seller/store.controller'); 
 
 
 // 미들웨어 등록
@@ -85,16 +85,16 @@ app.use('/seller/flowers', flowersRouter);
 
 //--------------------------------------------
 // 판매자 상품 목록 조회 (상품 관리 페이지로 이동)
-app.get('/seller/flowers', ensureAuthenticated, sellerController.renderFlowerList);
+app.get('/seller/flowers', ensureAuthenticated, flowersController.renderFlowerList);
 
 // 상품 등록 페이지로 이동
-app.get('/seller/flowers/create', ensureAuthenticated, sellerController.renderCreateFlower);
+app.get('/seller/flowers/create', ensureAuthenticated, flowersController.renderCreateFlower);
 
 // 상품 등록 처리
-app.post('/seller/flowers', ensureAuthenticated, upload.single('image'), sellerController.createFlower);
+app.post('/seller/flowers', ensureAuthenticated, upload.single('image'), flowersController.createFlower);
 
 // 상품 수정 페이지로 이동
-app.get('/seller/flowers/:flowerId/edit', ensureAuthenticated, sellerController.renderEditFlower);
+app.get('/seller/flowers/:flowerId/edit', ensureAuthenticated, flowersController.renderEditFlower);
 
 // 상품 수정 처리
 app.put('/seller/flowers/:flowerId', ensureAuthenticated, upload.single('image'), sellerController.updateFlower);
@@ -106,10 +106,10 @@ app.delete('/seller/flowers/:flowerId', ensureAuthenticated, sellerController.de
 
 // 판매자 마이페이지 - 주문확인
 // 주문 목록 확인
-app.get('/seller/orders', ensureAuthenticated, sellerController.getOrders);
+app.get('/seller/orders', ensureAuthenticated, ordersController.getOrders);
 
 // 주문 상태 등록
-app.post('/seller/orders/:orderId', ensureAuthenticated, sellerController.updateOrderStatus);
+app.post('/seller/orders/:orderId', ensureAuthenticated, ordersController.updateOrderStatus);
 
 
 // 판매자 마이페이지 - 공지사항
