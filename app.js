@@ -60,8 +60,13 @@ const noticesController = require('././controllers/seller/notices.controller');
 const ordersController = require('././controllers/seller/orders.controller'); 
 const flowersController = require('././controllers/seller/flowers.controller'); 
 const storeController = require('././controllers/seller/store.controller'); 
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> d6b108cb3b0a07495d463bc2599fa7c08595a4ea
 // 미들웨어 등록
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));

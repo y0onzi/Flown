@@ -15,10 +15,13 @@
     "express-ejs-layouts": "^2.5.1",
     "mysql2": "^3.3.2",
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     
     "passport": "^0.6.0",
 
+=======
+>>>>>>> d6b108cb3b0a07495d463bc2599fa7c08595a4ea
 =======
 >>>>>>> d6b108cb3b0a07495d463bc2599fa7c08595a4ea
     "bcrypt": "^5.1.0",
