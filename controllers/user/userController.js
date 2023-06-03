@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
-const userService = require('../services/userService');
-const userDao = require('../models/User');
+const userDao = require('../../models/User');
 
 const userController = {
 

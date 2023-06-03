@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const buyerController = require('../../controllers/buyerController');
+const buyerController = require('../../controllers/buyer/buyerController');
 const { body, validationResult } = require('express-validator');
 const userDao = require('../../models/User');
 
