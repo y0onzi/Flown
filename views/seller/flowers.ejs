@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>상품관리</title>
+</head>
+<body>
+  <h1>상품관리</h1>
+  <table>
+    <tr>
+      <th>flowerID</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Color</th>
+      <th>Photo</th>
+      <th>isSoldOut</th>
+      <th>Actions</th>
+    </tr>
+    <% flowers.forEach(function(flower) { %>
+      <tr id="flower-<%= flower.flower_id %>">
+        <td><%= flower.flower_id %></td>
+        <td class="flower-name"><%= flower.name %></td>
+        <td class="flower-price"><%= flower.price %></td>
+        <td class="flower-color"><%= flower.color %></td>
+        <td><img src="/uploads/<%= flower.photo %>" width="100" height="100"></td>
+        <td class="flower-sold-out"><%= flower.isSoldOut %></td>
+        <td>
+          <button onclick="showUpdateForm('<%= flower.flower_id %>')">수정</button>
+          <button onclick="deleteFlower('<%= flower.flower_id %>')">삭제</button>
+        </td>
+      </tr>
+    <% }); %>
+  </table>
+  <button onclick="showAddForm()" id="addButton">추가</button>
+  <!-- 상품 등록 폼 -->
+  <div id="add-form" style="display: none;">
+    <h2>상품 등록</h2>
+    <form id="add-flower-form" method="POST" enctype="multipart/form-data">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="price" placeholder="Price" required>
+      <select name="color" required>
+        <option value="">Choose a color</option>
+        <option value="red">Red</option>
+        <option value="orange">Orange</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="purple">Purple</option>
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="pink">Pink</option>
+      </select>
+      <input type="file" name="photo" required>
+      <input type="checkbox" name="soldOut"> Sold Out
+      <button type="submit">추가</button>
+    </form>
+  </div>
+  <!-- 상품 수정 폼 -->
+  <div id="update-form" style="display: none;">
+    <h2>상품 수정</h2>
+    <form id="update-flower-form" method="POST">
+      <input type="text" id="update-name" name="name" placeholder="Name" required>
+      <input type="text" id="update-price" name="price" placeholder="Price" required>
+      <select id="update-color" name="color" required>
+        <option value="">Choose a color</option>
+        <option value="red">Red</option>
+        <option value="orange">Orange</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="purple">Purple</option>
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="pink">Pink</option>
+      </select>
+      <input type="checkbox" id="update-sold-out" name="soldOut"> Sold Out
+      <button type="submit">수정</button>
+    </form>
+  </div>
+  <script>
+    function showAddForm() {
+      var addForm = document.getElementById("add-form");
+      addForm.style.display = "block";
+    }
+    function showUpdateForm(flowerId) {
+  var updateForm = document.getElementById("update-form");
+  updateForm.style.display = "block";
+
+  var formAction = "/seller/flowers/" + flowerId;
+  document.getElementById("update-flower-form").setAttribute("action", formAction);
+
+  var flowerRow = document.getElementById("flower-" + flowerId);
+  var name = flowerRow.querySelector(".flower-name").textContent;
+  var price = flowerRow.querySelector(".flower-price").textContent;
+  var color = flowerRow.querySelector(".flower-color").textContent;
+  var soldOut = flowerRow.querySelector(".flower-sold-out").textContent;
+
+  document.getElementById("update-name").value = name;
+  document.getElementById("update-price").value = price;
+  document.getElementById("update-color").value = color;
+  document.getElementById("update-sold-out").checked = soldOut === "true";
+}
+
+function deleteFlower(flowerId) {
+  var confirmDelete = confirm("정말 삭제하시겠습니까?");
+  if (confirmDelete) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", "/seller/flowers/" + flowerId);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var flowerRow = document.getElementById("flower-" + flowerId);
+        flowerRow.parentNode.removeChild(flowerRow);
+      }
+    };
+    xhr.send();
+  }
+}
+
+function updateFlower(event) {
+  event.preventDefault();
+  var flowerId = document.getElementById("update-flower-form").getAttribute("action").split("/").pop();
+  var formData = new FormData(document.getElementById("update-flower-form"));
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("PUT", "/seller/flowers/" + flowerId);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var updatedFlower = JSON.parse(xhr.responseText);
+
+      var flowerRow = document.getElementById("flower-" + flowerId);
+      flowerRow.querySelector(".flower-name").textContent = updatedFlower.name;
+      flowerRow.querySelector(".flower-price").textContent = updatedFlower.price;
+      flowerRow.querySelector(".flower-color").textContent = updatedFlower.color;
+      flowerRow.querySelector(".flower-sold-out").textContent = updatedFlower.isSoldOut;
+
+      document.getElementById("update-form").style.display = "none";
+    }
+  };
+  xhr.send(formData);
+}
+
+function addFlower(event) {
+  event.preventDefault();
+  var formData = new FormData(document.getElementById("add-flower-form"));
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/seller/flowers");
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var newFlower = JSON.parse(xhr.responseText);
+
+      var table = document.querySelector("table");
+      var newRow = table.insertRow(-1);
+      newRow.id = "flower-" + newFlower.flower_id;
+
+      var idCell = newRow.insertCell(0);
+      idCell.textContent = newFlower.flower_id;
+
+      var nameCell = newRow.insertCell(1);
+      nameCell.classList.add("flower-name");
+      nameCell.textContent = newFlower.name;
+
+      var priceCell = newRow.insertCell(2);
+      priceCell.classList.add("flower-price");
+      priceCell.textContent = newFlower.price;
+
+      var colorCell = newRow.insertCell(3);
+      colorCell.classList.add("flower-color");
+      colorCell.textContent = newFlower.color;
+
+      var photoCell = newRow.insertCell(4);
+      var photoImg = document.createElement("img");
+      photoImg.src = "/uploads/" + newFlower.photo;
+      photoImg.width = 100;
+      photoImg.height = 100;
+      photoCell.appendChild(photoImg);
+
+      var soldOutCell = newRow.insertCell(5);
+      soldOutCell.classList.add("flower-sold-out");
+      soldOutCell.textContent = newFlower.isSoldOut;
+
+      var actionsCell = newRow.insertCell(6);
+      var updateButton = document.createElement("button");
+      updateButton.textContent = "수정";
+      updateButton.addEventListener("click", function() {
+        showUpdateForm(newFlower.flower_id);
+      });
+      actionsCell.appendChild(updateButton);
+
+      var deleteButton = document.createElement("button");
+      deleteButton.textContent = "삭제";
+      deleteButton.addEventListener("click", function() {
+        deleteFlower(newFlower.flower_id);
+      });
+      actionsCell.appendChild(deleteButton);
+
+      document.getElementById("add-form").style.display = "none";
+    }
+  };
+  xhr.send(formData);
+}
+
+document.getElementById("add-flower-form").addEventListener("submit", addFlower);
+document.getElementById("update-flower-form").addEventListener("submit", updateFlower);
+</script>
+</body>
+</html>

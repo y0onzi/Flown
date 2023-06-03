@@ -1,0 +1,5 @@
+DB_HOST='34.22.89.7'
+DB_USER='sungshin'
+DB_PW='tjdtls!'
+DB_PORT='3306'
+DB_NAME='FLOWN'
