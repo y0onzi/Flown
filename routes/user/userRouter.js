@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const userController = require('../../controllers/userController');
+const userController = require('../../controllers/user/userController');
 const { body, validationResult } = require('express-validator');
 const userDao = require('../../models/User');
 
@@ -30,11 +30,11 @@ const registerSellerValidation = [
 ]
 
 router.get('/user/register/buyer', (req,res)=>{
-  res.render('registerBuyer');
+  res.render('user/registerBuyer');
 })
 
 router.get('/user/register/seller', (req,res)=>{
-  res.render('registerSeller');
+  res.render('user/registerSeller');
 })
 
 router.post('/user/register/buyer',registerBuyerValidation, userController.registerBuyer);
@@ -42,7 +42,7 @@ router.post('/user/register/buyer',registerBuyerValidation, userController.regis
 router.post('/user/register/seller', registerSellerValidation, userController.registerSeller);
 
 router.get('/user/login', (req,res)=>{
-  res.render('login');
+  res.render('user/login');
 })
 
 router.post('/user/login', userController.login);
