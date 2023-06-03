@@ -23,9 +23,11 @@
     next();
   };
   
+  
   // 인증된 사용자인지 확인하는 미들웨어 = 판매자의 로그인 여부 확인
   exports.ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    // 세션에서 정보 확인하여 인증 여부 판단
+    if (req.session.isAuthenticate === true) {
       return next();
     }
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트 또는 에러 처리

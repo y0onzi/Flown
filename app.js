@@ -47,13 +47,13 @@ const NoticesRouter = require('./routes/seller/notices.route');
 const OrdersRouter = require('./routes/seller/orders.route');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-const mysql = require('mysql');
+//const mysql = require('mysql');
 
 const { saveSellerIdToSession, ensureAuthenticated } = require('./middlewares/auth');
 const noticesController = require('././controllers/seller/notices.controller');
 const ordersController = require('././controllers/seller/orders.controller'); 
 const flowersController = require('././controllers/seller/flowers.controller'); 
-const storeController = require('././controllers/seller/store.controller'); 
+//const storeController = require('././controllers/seller/store.controller'); 
 
 
 // 미들웨어 등록
@@ -68,9 +68,6 @@ app.use(ensureAuthenticated);
 // 판매자 공지사항 라우터
 app.use('/seller/notices', NoticesRouter);
 
-// 판매자 매장페이지 라우터 -> 매장페이지 그냥 불러오는 거라서 라우트 생성하지 않았음! (url 리다이렉션 구현하기?)
-//app.use('/seller/store', StoreRouter);
-
 // 판매자 주문확인 라우터
 app.use('/seller/orders', OrdersRouter);
 
@@ -79,31 +76,29 @@ app.use('/seller/flowers', flowersRouter);
 
 //--------------------------------------------
 // 판매자 상품 목록 조회 (상품 관리 페이지로 이동)
-app.get('/seller/flowers', ensureAuthenticated, sellerController.renderFlowerList);
+app.get('/seller/flowers', ensureAuthenticated, flowersController.getFlowers);
 
 // 상품 등록 페이지로 이동
-app.get('/seller/flowers/create', ensureAuthenticated, sellerController.renderCreateFlower);
+app.get('/seller/flowers/add', ensureAuthenticated, flowersController.renderAddFlower);
 
 // 상품 등록 처리
-app.post('/seller/flowers', ensureAuthenticated, upload.single('image'), sellerController.createFlower);
+app.post('/seller/flowers', ensureAuthenticated, upload.single('image'), flowersController.addFlower);
 
-// 상품 수정 페이지로 이동
-app.get('/seller/flowers/:flowerId/edit', ensureAuthenticated, sellerController.renderEditFlower);
 
 // 상품 수정 처리
-app.put('/seller/flowers/:flowerId', ensureAuthenticated, upload.single('image'), sellerController.updateFlower);
+app.put('/seller/flowers/:flowerId', ensureAuthenticated, upload.single('image'), flowersController.updateFlower);
 
 // 상품 삭제 처리
-app.delete('/seller/flowers/:flowerId', ensureAuthenticated, sellerController.deleteFlower);
+app.delete('/seller/flowers/:flowerId', ensureAuthenticated, flowersController.deleteFlower);
 
 
 
 // 판매자 마이페이지 - 주문확인
 // 주문 목록 확인
-app.get('/seller/orders', ensureAuthenticated, sellerController.getOrders);
+app.get('/seller/orders', ensureAuthenticated, ordersController.getOrders);
 
 // 주문 상태 등록
-app.post('/seller/orders/:orderId', ensureAuthenticated, sellerController.updateOrderStatus);
+app.post('/seller/orders/:orderId', ensureAuthenticated, ordersController.updateOrderStatus);
 
 
 // 판매자 마이페이지 - 공지사항
@@ -119,15 +114,6 @@ app.put('/seller/notices/:noticeId', noticesController.updateNotice);
 
 // 공지사항 삭제
 app.delete('/seller/notices/:noticeId', noticesController.deleteNotice);
-
-
-
-// 판매자 마이페이지 - 매장페이지
-// 판매자 매장 페이지 조회
-app.get('/seller/store', storeController.getStorePage);
-
-
-
 
 
 
