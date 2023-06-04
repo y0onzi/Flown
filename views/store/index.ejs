@@ -30,34 +30,27 @@
           <td><%= flowers[i].price %></td>
           <td><%= flowers[i].photo %></td>
           <td>
-            <button class="add-to-bouquet" data-product-id="<%= flowers[i].flower_id %>">꽃다발에 추가</button>
-            <%console.log(flowers[i].flower_id) %>
+            <button onclick="goToQuantityPage('<%= flowers[i].flower_id %>')">꽃다발에 추가</button>
           </td>
         </tr>
       <% } %>
   </tbody>
 </table>
+<button onclick="goToCart('<%= bouquetId %>')">꽃다발로 이동하기</button>
   </main>
 
   <!-- 클라이언트 측 JavaScript 코드 -->
-<script>
-  // 장바구니에 추가 버튼 클릭 시 모달 팝업 표시
-  const addToBouquetButtons = document.querySelectorAll('.add-to-bouquet');
-  addToBouquetButtons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      const productId = event.target.dataset.productId;
-      // productIds 배열에 상품 ID가 저장되어 있음
-      console.log("@@@" + productId); // 배열 형태의 상품 ID 출력 예시
-      openModal(productId);
-    });
-  });
+  <script>
+    // 수량 조절 페이지로 이동하는 함수
+    function goToQuantityPage(flowerId) {
+      window.location.href = '/bouquet/quantity/' + flowerId;
+    }
 
-  // 모달 팝업 열기
-  function openModal(productId) {
-    // 모달 팝업을 열고 상품 ID를 전달하여 수량 조절 및 장바구니 추가 기능을 구현
-    // ... 모달 팝업 열기 및 상품 ID 전달하는 코드 작성 ...
-  }
-</script>
+    // 꽃다발로 이동하는 함수
+    function goToCart(flowerId) {
+      window.location.href = '/cart/add/' + flowerId;
+    }
+  </script>
 
 
 

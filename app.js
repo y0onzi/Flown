@@ -3,18 +3,19 @@ const app = express();
 const db = require('./config/database');
 require("dotenv").config();
 const layouts= require("express-ejs-layouts");
-const bouquetController = require('./controllers/store/bouquetController');
-const storeController = require('././controllers/seller/store.controller'); 
+
 
 app.set('port', process.env.PORT || 3000);
 
 const database = require('./database/database');
+
+//===============라우터 추가============================//
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
 const ordersRouter = require('./routes/orders/ordersRouter');
-
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
 app.use(searchRouter);  // 가게 검색 라우터
+
 
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
@@ -34,10 +35,13 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+
 // 가게 페이지 라우팅
 //app.get('/store/:sellerId', storeController.index);
 //app.get('/bouquet', bouquetController.addToBouquet);
 
+
+//===================라우터 연결================//
 app.use(express.urlencoded({
     extended: false
   }));
@@ -55,7 +59,6 @@ app.use((req, res, next) => {
 app.use(userRouter);
 app.use(buyerRouter);
 app.use(ordersRouter);
-
 
 
 const flowersRouter = require('./routes/seller/flowers.route');
