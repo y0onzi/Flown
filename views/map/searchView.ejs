@@ -5,7 +5,7 @@
 </head>
 <body>
   <h1>검색 페이지</h1>
-  <form method="POST" action="/search">
+  <form method="GET" action="/searchResults">
     <label for="city">시,도:</label>
     <select id="city" name="city">
       <% for (let i = 0; i < cities.length; i++) { %>
@@ -23,9 +23,8 @@
   </form>
 
   <script>
-    const cityOptions = JSON.parse('<%- JSON.stringify(cities) %>');
-    const districtOptions = JSON.parse('<%- JSON.stringify(districts) %>');
-    const neighborhoodOptions = JSON.parse('<%- JSON.stringify(neighborhoods) %>');
+    const districts = JSON.parse('<%- JSON.stringify(districts) %>');
+    const neighborhoods = JSON.parse('<%- JSON.stringify(neighborhoods) %>');
 
     const citySelect = document.getElementById('city');
     const districtSelect = document.getElementById('district');
@@ -33,7 +32,7 @@
 
     function populateDistricts() {
       const selectedCity = citySelect.value;
-      const options = districtOptions[selectedCity];
+      const options = districts[selectedCity];
 
       districtSelect.innerHTML = '';
 
@@ -50,7 +49,7 @@
     function populateNeighborhoods() {
       const selectedCity = citySelect.value;
       const selectedDistrict = districtSelect.value;
-      const options = neighborhoodOptions[selectedDistrict];
+      const options = neighborhoods[selectedDistrict];
 
       neighborhoodSelect.innerHTML = '';
 
