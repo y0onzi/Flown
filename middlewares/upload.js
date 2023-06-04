@@ -1,14 +1,17 @@
 const multer = require('multer');
 
+// Multer 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // 파일 저장 경로 설정
+    cb(null, 'uploads/'); // 파일이 저장될 경로
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // 파일 이름 설정
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const extension = file.mimetype.split('/')[1];
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + extension); // 파일명 설정
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 module.exports = upload;

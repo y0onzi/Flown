@@ -1,12 +1,4 @@
-/* const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database'
-});
-*/
-
+const db = require('../config/database');
 const Notice = {};
 
 // 공지사항 생성
