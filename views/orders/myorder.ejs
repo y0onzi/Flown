@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Details</title>
+  <title>Order</title>
   <style>
     table {
       width: 100%;
@@ -21,7 +21,7 @@
   <h1>Order Details</h1>
   <table>
     <tr>
-      <th>주문번호</th>
+      <th>가게이름</th>
       <th>총 결제 금액</th>
       <th>주문일자</th>
       <th>예상 수령일</th>
@@ -34,7 +34,7 @@
         <td><%= order.bouquetPrice %></td>
         <td><%= order.orderDate %></td>
         <td><%= order.pickUpDate %></td>
-        <td><a href="">보기</a></td>
+        <td><a href="/buyer/myorder/<%= order.order_id%>">보기</a></td>
         <td><%= order.orderStatus %></td>
       </tr>
     <% }); %>

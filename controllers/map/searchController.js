@@ -3,7 +3,7 @@ const searchModel = require('../../models/searchModel');
 // 검색 페이지 렌더링
 exports.renderSearchPage = (req, res) => {
   // 이 부분에서 (시,도), (시,군,구), (읍,면,동)을 가져와서 뷰에 전달
-  const cities = ['서울', '경기도', '부산광역시' ]; 
+  const cities = ['서울', '경기도', '부산광역시'];
   const districts = {
     '서울': ['마포구', '성북구', '관악구'],
     '경기도': ['수원시', '용인시', '성남시'],
