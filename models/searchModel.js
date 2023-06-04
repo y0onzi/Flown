@@ -1,44 +1,17 @@
-//searchModel.js
-
 const db = require('../config/database');
 
-
-exports.getCities = async () => {
+exports.getSearchResults = async (city, district, neighborhood) => {
   try {
-    const query = 'SELECT * FROM cities';
-    const results = await db.query(query);
+    const query = `SELECT * FROM seller_info WHERE address_city = '${city}' AND address_district = '${district}' AND address_dong = '${neighborhood}'`;
+
+    const connection = await db.getConnection(); // 커넥션 풀에서 연결 획득
+    const [results] = await connection.query(query);
+    connection.release(); // 연결 반환
+
     return results;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    console.error('쿼리 실행 오류:', err);
+    throw err;
   }
 };
 
-exports.getRegions = async (city) => {
-  try {
-    const query = 'SELECT * FROM regions WHERE city = ?';
-    const results = await db.query(query, [city]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.getLocations = async (region) => {
-  try {
-    const query = 'SELECT * FROM locations WHERE region = ?';
-    const results = await db.query(query, [region]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.searchStores = async (city, region, location) => {
-  try {
-    const query = 'SELECT * FROM stores WHERE city = ? AND region = ? AND location = ?';
-    const results = await db.query(query, [city, region, location]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
