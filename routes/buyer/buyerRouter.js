@@ -7,8 +7,6 @@ const userDao = require('../../models/User');
 // 내 정보 조회
 router.get('/buyer/my', buyerController.getBuyer);
 
-// 내 정보 수정
-router.put('/buyer/my', buyerController.updateBuyer);
 
 // 리뷰 등록
 //router.post('/buyer/reviews', buyerController.createReview);

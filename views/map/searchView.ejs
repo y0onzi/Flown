@@ -1,67 +1,70 @@
-
-
 <!DOCTYPE html>
-
 <html>
 <head>
-  <title>Search Page</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#city').change(function() {
-        const city = $(this).val();
-        $.get('/search/regions', { city: city }, function(data) {
-          const regions = data.regions;
-          $('#region').empty();
-          regions.forEach(function(region) {
-            $('#region').append($('<option>', {
-              value: region,
-              text: region
-            }));
-          });
-        });
-      });
-
-      $('#region').change(function() {
-        const region = $(this).val();
-        $.get('/search/locations', { region: region }, function(data) {
-          const locations = data.locations;
-          $('#location').empty();
-          locations.forEach(function(location) {
-            $('#location').append($('<option>', {
-              value: location,
-              text: location
-            }));
-          });
-        });
-      });
-    });
-  </script>
+  <title>검색 페이지</title>
 </head>
 <body>
-  <h1>Search Page</h1>
-  <form action="/search/stores" method="POST">
-    <label for="city">City:</label>
+  <h1>검색 페이지</h1>
+  <form method="GET" action="/searchResults">
+    <label for="city">시,도:</label>
     <select id="city" name="city">
-      <% cities.forEach(function(city) { %>
-        <option value="<%= city %>"><%= city %></option>
-      <% }); %>
+      <% for (let i = 0; i < cities.length; i++) { %>
+        <option value="<%= cities[i] %>"><%= cities[i] %></option>
+      <% } %>
     </select>
     <br>
-    <label for="region">Region:</label>
-    <select id="region" name="region"></select>
+    <label for="district">시,군,구:</label>
+    <select id="district" name="district"></select>
     <br>
-    <label for="location">Location:</label>
-    <select id="location" name="location"></select>
+    <label for="neighborhood">읍,면,동:</label>
+    <select id="neighborhood" name="neighborhood"></select>
     <br>
-    <button type="submit">Search</button>
+    <button type="submit">검색</button>
   </form>
 
-  <% if (stores) { %>
-    <h2>Search Results:</h2>
-    <% stores.forEach(function(store) { %>
-      <p><%= store.name %>: <%= store.address %></p>
-    <% }); %>
-  <% } %>
+  <script>
+    const districts = JSON.parse('<%- JSON.stringify(districts) %>');
+    const neighborhoods = JSON.parse('<%- JSON.stringify(neighborhoods) %>');
+
+    const citySelect = document.getElementById('city');
+    const districtSelect = document.getElementById('district');
+    const neighborhoodSelect = document.getElementById('neighborhood');
+
+    function populateDistricts() {
+      const selectedCity = citySelect.value;
+      const options = districts[selectedCity];
+
+      districtSelect.innerHTML = '';
+
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement('option');
+        option.value = options[i];
+        option.textContent = options[i];
+        districtSelect.appendChild(option);
+      }
+
+      populateNeighborhoods();
+    }
+
+    function populateNeighborhoods() {
+      const selectedCity = citySelect.value;
+      const selectedDistrict = districtSelect.value;
+      const options = neighborhoods[selectedDistrict];
+
+      neighborhoodSelect.innerHTML = '';
+
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement('option');
+        option.value = options[i];
+        option.textContent = options[i];
+        neighborhoodSelect.appendChild(option);
+      }
+    }
+
+    citySelect.addEventListener('change', populateDistricts);
+    districtSelect.addEventListener('change', populateNeighborhoods);
+
+    populateDistricts();
+  </script>
 </body>
 </html>

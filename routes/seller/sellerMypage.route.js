@@ -3,12 +3,13 @@
 const express = require('express');
 const router = express.Router();
 const sellerMypageController = require('../../controllers/seller/sellerMypage.controller');
+const { ensureAuthenticated, ensureAuthorized } = require('../middlewares/auth');
 
 // 판매자 마이페이지 조회
-router.get('/:sellerId/mypage', sellerMypageController.getSellerMypage);
+router.get('/seller/mypage/:sellerId', sellerMypageController.getSellerMypage);
 
 // 판매자 정보 수정
-router.post('/:sellerId/mypage', sellerMypageController.updateSellerProfile);
+router.post('/seller/mypage/:sellerId', sellerMypageController.updateSellerProfile);
 
 // 상품관리 페이지로 이동
 router.get('/:sellerId/flowers', (req, res) => {

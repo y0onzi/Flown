@@ -1,44 +1,30 @@
-//searchModel.js
 
 const db = require('../config/database');
 
+exports.getSearchResults = async (city, district, neighborhood) => {
 
-exports.getCities = async () => {
+
   try {
-    const query = 'SELECT * FROM cities';
-    const results = await db.query(query);
-    return results;
-  } catch (error) {
-    throw error;
+    const connection = await db.getConnection();
+    const query = `
+      SELECT storeName, address_city, address_district, address_dong
+      FROM seller_info
+      WHERE address_city = ? AND address_district = ? AND address_dong = ?
+    `;
+    const results = await db.query(query, [city, district, neighborhood]);
+
+    console.log("모델 " + results);
+
+   return results;
+
+
+
+
+  } catch (err) {
+    console.error('검색 결과 조회 오류:', err);
+
   }
 };
 
-exports.getRegions = async (city) => {
-  try {
-    const query = 'SELECT * FROM regions WHERE city = ?';
-    const results = await db.query(query, [city]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.getLocations = async (region) => {
-  try {
-    const query = 'SELECT * FROM locations WHERE region = ?';
-    const results = await db.query(query, [region]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.searchStores = async (city, region, location) => {
-  try {
-    const query = 'SELECT * FROM stores WHERE city = ? AND region = ? AND location = ?';
-    const results = await db.query(query, [city, region, location]);
-    return results;
-  } catch (error) {
-    throw error;
-  }
-};
+//읽어올때 seller_id 도 같이 가져와서 , 그거랑 session 에 저장해서 넘겨주라... 
+// 연결경로는 /store/:sellerId <- 세션에서 읽어와서 저장하기 

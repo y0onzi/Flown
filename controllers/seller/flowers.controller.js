@@ -38,6 +38,12 @@ exports.getFlowers = (req, res) => {
     });
   };
   
+  //상품 등록 페이지 렌더링
+  exports.renderAddFlower = (req, res) => {
+    res.render('addFlower')
+  }
+
+
   // 상품 수정
   exports.updateFlower = (req, res) => {
     const sellerId = req.session.sellerId; // 세션에 저장된 판매자 ID를 사용
