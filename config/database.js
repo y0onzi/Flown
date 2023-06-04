@@ -9,14 +9,9 @@ const options = {
     database: process.env.DB_NAME
 }
 
-<<<<<<< HEAD
 const db = mysql.createPool(options)
 
 module.exports = {
   options,
   db
 };
-=======
-module.exports = db;
-
->>>>>>> 718d2b2fccf30b50edf5fd443f4c08478d46885d

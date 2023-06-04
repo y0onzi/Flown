@@ -3,22 +3,24 @@ const app = express();
 const db = require('./config/database');
 require("dotenv").config();
 const layouts= require("express-ejs-layouts");
-const storeController = require('./controllers/store/storeController');
-const bouquetController = require('./controllers/store/bouquetController');
+
 
 app.set('port', process.env.PORT || 3000);
 
 const database = require('./database/database');
+
+//===============라우터 추가============================//
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
-
-
+const ordersRouter = require('./routes/orders/ordersRouter');
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
-app.use('/search', searchRouter);  // 가게 검색 라우터
+app.use(searchRouter);  // 가게 검색 라우터
 
 
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+
+app.use(layouts)
 
 var sessionStore = new MySQLStore(database.options);
 
@@ -33,18 +35,32 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// 가게 페이지 라우팅
-app.get('/store/:sellerId', storeController.index);
-app.get('/bouquet', bouquetController.addToBouquet);
 
+// 가게 페이지 라우팅
+//app.get('/store/:sellerId', storeController.index);
+//app.get('/bouquet', bouquetController.addToBouquet);
+
+
+//===================라우터 연결================//
 app.use(express.urlencoded({
     extended: false
   }));
 app.use(express.json());
   
+app.use((req, res, next) => {
+  if (typeof req.session.user !== 'undefined' && req.session.user.loggedIn) {
+    res.locals.hideLoginSignup = true;
+  } else {
+    res.locals.hideLoginSignup = false;
+  }
+  next();
+});
+
 app.use(userRouter);
 app.use(buyerRouter);
-  
+app.use(ordersRouter);
+
+
 
 //---판매자 마이페이지 관련---
 const flowersRouter = require('./routes/seller/flowers.route');
@@ -58,6 +74,10 @@ const upload = multer({ dest: 'uploads/' });
 const noticesController = require('./controllers/seller/notices.controller');
 const ordersController = require('./controllers/seller/orders.controller'); 
 const flowersController = require('./controllers/seller/flowers.controller'); 
+
+const noticesController = require('././controllers/seller/notices.controller');
+const ordersController = require('././controllers/seller/orders.controller'); // 주문 컨트롤러 추가
+const flowersController = require('././controllers/seller/flowers.controller'); // 상품 컨트롤러 추가
 
 
 // 미들웨어 등록
@@ -75,13 +95,7 @@ app.use('/seller/orders', OrdersRouter);
 // 판매자 상품관리 라우터
 app.use('/seller/flowers', flowersRouter);
 
-<<<<<<< HEAD
-=======
-//--------------------------------------------
-// 판매자 상품 목록 조회 (상품 관리 페이지로 이동)
 
-app.get('/seller/flowers', ensureAuthenticated, flowersController.getFlowers);
->>>>>>> 718d2b2fccf30b50edf5fd443f4c08478d46885d
 
 // 판매자 마이페이지 - 상품 관리
 // 판매자 상품 목록 조회 (상품 관리 페이지로 이동)
@@ -120,6 +134,10 @@ app.put('/seller/notices/:noticeId', noticesController.updateNotice);
 app.delete('/seller/notices/:noticeId', noticesController.deleteNotice);
 
 //---판매자 마이페이지 끝---
+
+// 판매자 마이페이지 - 매장페이지
+// 판매자 매장 페이지 조회
+app.get('/seller/store', storeController.getStorePage);
 
 
 app.listen(app.get('port'), () => {
