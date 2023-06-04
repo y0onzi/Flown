@@ -32,6 +32,7 @@ const User = {
     loginSeller: async(id)=>{
         let sql = 'SELECT password from seller_info WHERE seller_id = ?'
         const [rows] = await db.query(sql, [id]);
+        console.log(rows[0]);
         return rows[0].password;
     }
 }

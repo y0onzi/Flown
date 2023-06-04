@@ -31,7 +31,7 @@ const userController = {
 
       // 유저 등록
       userDao.registerBuyer(id, hashedPassword, name, phoneNumber);
-      res.render('user/loginSuccess');
+      res.redirect('/user/loginSuccess');
     } catch (error) {
       res.render('error', { message: '회원가입 오류가 발생했습니다.' });
     }

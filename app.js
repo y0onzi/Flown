@@ -11,11 +11,10 @@ app.set('port', process.env.PORT || 3000);
 const database = require('./database/database');
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
-
+const ordersRouter = require('./routes/orders/ordersRouter');
 
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
 app.use('/search', searchRouter);  // 가게 검색 라우터
-
 
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
@@ -31,8 +30,6 @@ app.use(session({
   store: sessionStore,
 }));
 
-
-
 //애플리케이션과 템플릿 엔진의 연결
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -41,15 +38,12 @@ app.set('views', './views');
 //app.get('/store/:sellerId', storeController.index);
 //app.get('/bouquet', bouquetController.addToBouquet);
 
-
-
 app.use(express.urlencoded({
     extended: false
   }));
 app.use(express.json());
   
 app.use((req, res, next) => {
-  console.log(req.session.user);
   if (typeof req.session.user !== 'undefined' && req.session.user.loggedIn) {
     res.locals.hideLoginSignup = true;
   } else {
@@ -60,6 +54,8 @@ app.use((req, res, next) => {
 
 app.use(userRouter);
 app.use(buyerRouter);
+app.use(ordersRouter);
+
 
 
 const flowersRouter = require('./routes/seller/flowers.route');
