@@ -1,23 +1,15 @@
-// routes/seller/flowers.route.js
-
 const express = require('express');
 const router = express.Router();
 const flowersController = require('../../controllers/seller/flowers.controller');
+//const { ensureAuthenticated } = require('../../middlewares/auth');
 
-// 판매자 상품 관리 - 상품 목록 조회
-router.get('/flowers', /*ensureAuthenticated*/ flowersController.getFlowers);
-
-// 판매자 상품 관리 - 상품 등록
-router.post('/flowers', flowersController.addFlower);
-
-// 판매자 상품 관리 - 상품 수정
-router.put('/flowers/:flowerId', flowersController.updateFlower);
-
-// 판매자 상품 관리 - 상품 삭제
-router.delete('/flowers/:flowerId', flowersController.deleteFlower);
-
-// 상품 등록 페이지로 이동
-router.get('/seller/flowers/add', flowersController.renderAddFlower);
-
+// 상품 목록 조회
+router.get('/seller/flowers', flowersController.getFlowers);
+// 상품 등록
+router.post('/seller/flowers/add', flowersController.addFlower);
+// 상품 수정
+router.patch('/seller/flowers/update/:flowerId', flowersController.updateFlower);
+// 상품 삭제
+router.delete('/seller/flowers/delete/:flowerId', flowersController.deleteFlower);
 
 module.exports = router;

@@ -3,10 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const sellerMypageController = require('../../controllers/seller/sellerMypage.controller');
-const { ensureAuthenticated, ensureAuthorized } = require('../middlewares/auth');
+//const { ensureAuthenticated } = require('../middlewares/auth');
 
 // 판매자 마이페이지 조회
-router.get('/seller/mypage/:sellerId', sellerMypageController.getSellerMypage);
+router.get('/seller/mypage/:sellerId', /*ensureAuthenticated,*/ sellerMypageController.getSellerMypage);
 
 // 판매자 정보 수정
 router.post('/seller/mypage/:sellerId', sellerMypageController.updateSellerProfile);
@@ -35,6 +35,7 @@ router.get('/:sellerId/notice', (req, res) => {
   res.render('seller/notice', { sellerId });
 });
 
+/*
 // 매장페이지로 이동
 router.get('/:sellerId/store', (req, res) => {
   const sellerId = req.params.sellerId;
@@ -42,17 +43,7 @@ router.get('/:sellerId/store', (req, res) => {
   // 판매자의 매장페이지로 이동
   res.render('seller/store', { sellerId });
 });
-
-// 판매자 로그아웃 처리
-router.post('/logout', (req, res) => {
-  // 로그아웃 처리 로직을 구현합니다.
-  // 세션 등의 관리 방식에 따라 세션 삭제 등의 작업을 수행합니다.
-
-  // 로그아웃 성공 메시지를 클라이언트에 응답으로 보냅니다.
-  res.json({ message: '로그아웃 되었습니다.' });
-});
-
-module.exports = router;
+*/
 
 
 
