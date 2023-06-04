@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>검색 결과</title>
+</head>
+<body>
+  <h1>검색 결과</h1>
+  <% if (seller_info.length > 0) { %>
+    <ul>
+      <% for (let i = 0; i < seller_info.length; i++) { %>
+        <li><%= seller_info[i].storeName %>
+        <%= seller_info[i].address_city %>, <%= seller_info[i].address_district %>, <%= seller_info[i].address_dong %></li>
+        <br>
+      <% } %>
+    </ul>
+  <% } else { %>
+    <p>검색 결과가 없습니다.</p>
+  <% } %>
+</body>
+</html>

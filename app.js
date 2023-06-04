@@ -14,7 +14,7 @@ const buyerRouter = require('./routes/buyer/buyerRouter');
 const ordersRouter = require('./routes/orders/ordersRouter');
 
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
-app.use('/search', searchRouter);  // 가게 검색 라우터
+app.use(searchRouter);  // 가게 검색 라우터
 
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
