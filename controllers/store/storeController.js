@@ -2,12 +2,15 @@ const storeModel = require("../../models/store");
 
 module.exports = {
     //index : async(req, res, next) => {
-    index : async(req, res) => {
+    showStore : async(req, res) => {
         try {
             //가게 정보 조회
             const sellerId = req.params.sellerId;
+            //req.session.sellerId = sellerId;
+            //saveSellerIdToSession(sellerId);
+            
             const store = await storeModel.getStoreById(sellerId);
-            //console.log("컨트롤러 결과 조회: " + JSON.stringify(store[0].storeName));
+            console.log("컨트롤러 결과 조회: " + JSON.stringify(store[0].storeName));
             
             if(!store){
                 return res.status(404).send('Store not found');
@@ -39,5 +42,12 @@ module.exports = {
         }
     },
 
+    // saveSellerIdToSession: (sellerId) => {
+    //     //const sellerId = req.params.sellerId; // 판매자 ID 값
+    //     req.session.sellerId = sellerId; // sellerId를 세션에 저장
+    //     console.log("저장된 셀러아이디 확인: " + sellerId);
+        
+    //     //res.send('Seller ID saved to session');
+    //   }
 
 }
