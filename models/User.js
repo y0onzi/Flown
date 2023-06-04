@@ -1,4 +1,4 @@
-const db = require('../database/database').db;
+const db = require('../config/database').db;
 
 const User = {
     registerBuyer: async(id, password, name, phoneNumber)=>{

@@ -3,8 +3,8 @@ const app = express();
 const db = require('./config/database');
 require("dotenv").config();
 const layouts= require("express-ejs-layouts");
-const storeController = require('./controllers/store/storeController');
 const bouquetController = require('./controllers/store/bouquetController');
+const storeController = require('././controllers/seller/store.controller'); 
 
 app.set('port', process.env.PORT || 3000);
 
@@ -20,6 +20,8 @@ app.use('/search', searchRouter);  // 가게 검색 라우터
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
+app.use(layouts)
+
 var sessionStore = new MySQLStore(database.options);
 
 app.use(session({
@@ -29,38 +31,48 @@ app.use(session({
   store: sessionStore,
 }));
 
+
+
 //애플리케이션과 템플릿 엔진의 연결
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
 // 가게 페이지 라우팅
-app.get('/store/:sellerId', storeController.index);
-app.get('/bouquet', bouquetController.addToBouquet);
+//app.get('/store/:sellerId', storeController.index);
+//app.get('/bouquet', bouquetController.addToBouquet);
+
+
 
 app.use(express.urlencoded({
     extended: false
   }));
 app.use(express.json());
   
+app.use((req, res, next) => {
+  console.log(req.session.user);
+  if (typeof req.session.user !== 'undefined' && req.session.user.loggedIn) {
+    res.locals.hideLoginSignup = true;
+  } else {
+    res.locals.hideLoginSignup = false;
+  }
+  next();
+});
+
 app.use(userRouter);
 app.use(buyerRouter);
-  
 
-//---유진---
+
 const flowersRouter = require('./routes/seller/flowers.route');
 const NoticesRouter = require('./routes/seller/notices.route');
 //const StoreRouter = require('./routes/seller/store.route');
 const OrdersRouter = require('./routes/seller/orders.route');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-//const mysql = require('mysql');
 
 const { saveSellerIdToSession, ensureAuthenticated } = require('./middlewares/auth');
 const noticesController = require('././controllers/seller/notices.controller');
-const ordersController = require('././controllers/seller/orders.controller'); 
-const flowersController = require('././controllers/seller/flowers.controller'); 
-//const storeController = require('././controllers/seller/store.controller'); 
-
+const ordersController = require('././controllers/seller/orders.controller'); // 주문 컨트롤러 추가
+const flowersController = require('././controllers/seller/flowers.controller'); // 상품 컨트롤러 추가
 
 // 미들웨어 등록
 app.use(express.urlencoded({ extended: true }));
@@ -122,6 +134,10 @@ app.put('/seller/notices/:noticeId', noticesController.updateNotice);
 // 공지사항 삭제
 app.delete('/seller/notices/:noticeId', noticesController.deleteNotice);
 
+
+// 판매자 마이페이지 - 매장페이지
+// 판매자 매장 페이지 조회
+app.get('/seller/store', storeController.getStorePage);
 
 
 app.listen(app.get('port'), () => {
