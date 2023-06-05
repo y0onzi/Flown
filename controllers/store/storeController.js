@@ -6,7 +6,7 @@ module.exports = {
         try {
             //가게 정보 조회
             const sellerId = req.params.sellerId;
-            //req.session.sellerId = sellerId;
+            req.session.sellerId = sellerId;
             //saveSellerIdToSession(sellerId);
             
             const store = await storeModel.getStoreById(sellerId);
@@ -40,7 +40,7 @@ module.exports = {
         } catch(err){
             console.error(err);
         }
-    },
+    }
 
     // saveSellerIdToSession: (sellerId) => {
     //     //const sellerId = req.params.sellerId; // 판매자 ID 값
