@@ -1,5 +1,5 @@
 
-const db = require('../config/database');
+const db = require('../config/database').db;
 
 exports.getSearchResults = async (city, district, neighborhood) => {
 
@@ -7,20 +7,17 @@ exports.getSearchResults = async (city, district, neighborhood) => {
   try {
     const connection = await db.getConnection();
     const query = `
-      SELECT storeName, address_city, address_district, address_dong
+      SELECT seller_id, storeName, address_city, address_district, address_dong
       FROM seller_info
       WHERE address_city = ? AND address_district = ? AND address_dong = ?
     `;
     const results = await db.query(query, [city, district, neighborhood]);
 
-    console.log("모델 " + results);
+    console.log("모델 " + results[0]);
 
    return results;
 
-
-
-
-  } catch (err) {
+} catch (err) {
     console.error('검색 결과 조회 오류:', err);
 
   }

@@ -5,11 +5,17 @@
 </head>
 <body>
   <h1>검색 결과</h1>
-  <% if (seller_info.length > 0) { %>
+  <% if (searchResults.length > 0) { %>
     <ul>
-      <% for (let i = 0; i < seller_info.length; i++) { %>
-        <li><%= seller_info[i].storeName %>
-        <%= seller_info[i].address_city %>, <%= seller_info[i].address_district %>, <%= seller_info[i].address_dong %></li>
+      <% for (let i = 0; i < searchResults.length; i++) { %>
+        <li>
+          <!-- <%= searchResults[i].storeName %>, -->
+          <a href="/store/<%= searchResults[i].seller_id %>"><%= searchResults[i].storeName %>,</a>
+        <%= searchResults[i].address_city %>, 
+        <%= searchResults[i].address_district %>, 
+        <%= searchResults[i].address_dong %>
+      </li>
+       
         <br>
       <% } %>
     </ul>

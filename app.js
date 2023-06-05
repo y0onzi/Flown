@@ -37,7 +37,7 @@ app.set('views', './views');
 
 
 // 가게 페이지 라우팅
-//app.get('/store/:sellerId', storeController.index);
+app.get('/store/:sellerId', storeController.index);
 //app.get('/bouquet', bouquetController.addToBouquet);
 
 
