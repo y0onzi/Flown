@@ -15,7 +15,7 @@ exports.renderSearchPage = (req, res) => {
 
 
 
-  res.render('searchView', { cities, districts, neighborhoods });
+  res.render('map/searchView', { cities, districts, neighborhoods });
 };
 
 exports.getSearchResults = async (req, res) => {
@@ -47,7 +47,7 @@ exports.getSearchResults = async (req, res) => {
 
     const seller_id = req.session.
 
-    res.render('searchResultsView', { searchResults: results[0] });
+    res.render('map/searchResultsView', { searchResults: results[0] });
 
    
   } catch (err) {

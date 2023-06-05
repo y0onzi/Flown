@@ -3,11 +3,11 @@ const validation = require('../util/validationUtils');
 
 
 module.exports = {
-    createBouquet: async (buyerId) => {
+    createBouquet: async (buyerId, sellerId) => {
       try {
         // 꽃다발 테이블에 꽃다발 생성
-        const createBouquetQuery = 'INSERT INTO bouquet (buyer_id, price) VALUES (?, 0)';
-        await db.query(createBouquetQuery, [buyerId]);
+        const createBouquetQuery = 'INSERT INTO bouquet (buyer_id, seller_id, price) VALUES (?, ?, 0)';
+        await db.query(createBouquetQuery, [buyerId, sellerId]);
         console.log('꽃다발 초기화 완료!');
         
   
@@ -41,11 +41,39 @@ module.exports = {
 
     
         // 꽃다발 구성 테이블에 꽃 추가
-        const addToBouquetQuery = 'INSERT INTO bouquet_configuration (bouquet_id, flower_id, flowerAmount) VALUES (?, ?, ?)';
-        await db.query(addToBouquetQuery, [bouquetId, flowerId, flowerAmount]);
+        // const addToBouquetQuery = 'INSERT INTO bouquet_configuration (bouquet_id, flower_id, flowerAmount) VALUES (?, ?, ?)';
+        // await db.query(addToBouquetQuery, [bouquetId, flowerId, flowerAmount]);
+        const addToBouquetQuery = 'INSERT INTO bouquet_configuration (bouquet_id, seller_id, flower_id, flowerAmount) VALUES (?, ?, ?, ?)';
+        await db.query(addToBouquetQuery, [bouquetId, sellerId, flowerId, flowerAmount]);
+
         console.log('꽃다발에 꽃 추가 완료!');
       } catch (err) {
         console.error(err);
       }
+    }, 
+    getBouquetItems: async (bouquet_id, seller_id) => {
+      try {
+        //const getBouquetItemsQuery = 'SELECT bc.flower_id, bc.flowerAmount, f.name, f.price, f.photo FROM bouquet_configuration bc JOIN flower f ON bc.flower_id = f.flower_id WHERE bc.bouquet_id = ? AND bc.seller_id = (SELECT seller_id FROM bouquet WHERE bouquet_id = ?);';
+        const getBouquetItemsQuery = 'SELECT bc.flower_id, bc.flowerAmount, f.name, f.price, f.photo FROM bouquet_configuration bc JOIN flower f ON bc.flower_id = f.flower_id WHERE bc.bouquet_id = ? AND f.seller_id = ?;';
+        const [rows] = await db.query(getBouquetItemsQuery, [bouquet_id, seller_id]);
+
+
+    
+        // 아이템들의 총 가격 계산
+        let totalPrice = 0;
+        for (const item of rows) {
+          const itemPrice = item.price * item.flowerAmount;
+          totalPrice += itemPrice;
+        }
+    
+        console.log("꽃다발 모델 조회 : ", rows);
+        console.log("장바구니 총 가격 : ", totalPrice);
+    
+        return { items: rows, totalPrice };
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error getting bouquet items");
+      }
     }
+    
   };

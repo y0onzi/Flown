@@ -15,6 +15,10 @@ router.get('/bouquet/quantity/:flowerId', (req, res) => {
 //꽃다발 수량 페이지 
 router.post('/bouquet/addToBouquet', bouquetController.addToBouquet);
 
+//꽃다발 조회 페이지
+router.get('/bouquet', bouquetController.showBouquet);
+
+
 
 
 module.exports = router;

@@ -6,11 +6,18 @@ module.exports = {
       // 세션에서 구매자 ID 추출 
       const buyerId = req.session.user.id;
       const sellerId = req.session.sellerId;
+      //console.log("부케 - 구매자아이디 세션 확인: " + buyerId);
+      //console.log("부케 -  판매자아이디 세션 확인: " + sellerId);
+    
+      let bouquetId = req.session.bouquetId; // 세션에 저장된 장바구니 아이디 읽어오기
 
-      // 꽃다발 생성
-      const bouquetId = await bouquetModel.createBouquet(buyerId);
+      if (!bouquetId) {
+        // 꽃다발 아이디가 없는 경우, 꽃다발 새로 생성
+        bouquetId = await bouquetModel.createBouquet(buyerId, sellerId);
+        req.session.bouquetId = bouquetId; // 생성된 장바구니 아이디 세션에 저장
+      }
       console.log("부케아이디확인: " + bouquetId)
-      
+
       // 꽃다발에 꽃 추가
       const flowerId = req.body.flowerId;
       const quantity = req.body.quantity;
@@ -22,6 +29,21 @@ module.exports = {
     } catch (err) {
       console.error(err);
       res.status(500).send('Error adding flower to bouquet');
+    }
+  },
+  showBouquet: async (req, res) => {
+    try {
+
+      const bouquetId = req.session.bouquetId;
+      const sellerId = req.session.sellerId;
+      const bouquetItems = await bouquetModel.getBouquetItems(bouquetId, sellerId);
+      console.log(bouquetItems.items);
+      console.log(bouquetItems.totalPrice);
+
+      res.render('store/bouquet', { bouquetItems });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error displaying cart');
     }
   }
 };
