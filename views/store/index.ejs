@@ -35,6 +35,7 @@
         </tr>
       <% } %>
   </tbody>
+<button onclick="goToCart()">꽃다발로 이동하기</button>
 </table>
 
   </main>
@@ -47,8 +48,8 @@
     }
 
     // 꽃다발로 이동하는 함수
-    function goToCart(flowerId) {
-      window.location.href = '/cart/add/' + flowerId;
+    function goToCart() {
+      window.location.href = '/bouquet';
     }
   </script>
 

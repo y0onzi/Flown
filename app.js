@@ -17,10 +17,13 @@ const mainRouter = require('./routes/main/mainRouter');
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
 const ordersRouter = require('./routes/orders/ordersRouter');
+
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
+
 // app.use(searchRouter);  // 가게 검색 라우터
 const storeRouter = require('./routes/store/storeRouter'); //가게 상세 페이지
 // app.use(storeRouter);
+
 
 
 const session = require('express-session');
@@ -43,11 +46,6 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 
-// 가게 페이지 라우팅
-//app.get('/store/:sellerId', storeController.index);
-//app.get('/bouquet', bouquetController.addToBouquet);
-
-
 //===================라우터 연결================//
 app.use(express.urlencoded({
     extended: false
@@ -63,6 +61,8 @@ app.use((req, res, next) => {
   next();
 });
 
+
+//=====app.use 정리=====//
 app.use(mainRouter);
 app.use(userRouter);
 app.use(buyerRouter);
@@ -70,6 +70,9 @@ app.use(ordersRouter);
 app.use(searchRouter);  // 가게 검색 라우터
 app.use(storeRouter);
 
+
+app.use(searchRouter);  // 가게 검색 라우터
+app.use(storeRouter);
 
 
 
@@ -85,7 +88,6 @@ const upload = multer({ dest: 'uploads/' });
 const noticesController = require('./controllers/seller/notices.controller');
 const ordersController = require('./controllers/seller/orders.controller'); 
 const flowersController = require('./controllers/seller/flowers.controller'); 
-
 
 
 
@@ -147,6 +149,7 @@ app.delete('/seller/notices/:noticeId', noticesController.deleteNotice);
 // 판매자 마이페이지 - 매장페이지
 // 판매자 매장 페이지 조회
 //app.get('/seller/store', storeController.getStorePage);
+
 
 
 app.listen(app.get('port'), () => {
