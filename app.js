@@ -4,23 +4,30 @@ const db = require('./config/database');
 require("dotenv").config();
 const layouts= require("express-ejs-layouts");
 
+app.use(express.static('public'));
+
 
 app.set('port', process.env.PORT || 3000);
 
 const database = require('./database/database');
 
 //===============라우터 추가============================//
+const mainRouter = require('./routes/main/mainRouter');
+
 const userRouter = require('./routes/user/userRouter');
 const buyerRouter = require('./routes/buyer/buyerRouter');
 const ordersRouter = require('./routes/orders/ordersRouter');
 const searchRouter = require('./routes/map/searchRoute'); // 가게 검색 라우터
-app.use(searchRouter);  // 가게 검색 라우터
+// app.use(searchRouter);  // 가게 검색 라우터
+const storeRouter = require('./routes/store/storeRouter'); //가게 상세 페이지
+// app.use(storeRouter);
 
 
 const session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
-app.use(layouts)
+app.use(layouts);
+app.use(express.static('public'));
 
 var sessionStore = new MySQLStore(database.options);
 
@@ -37,7 +44,7 @@ app.set('views', './views');
 
 
 // 가게 페이지 라우팅
-app.get('/store/:sellerId', storeController.index);
+//app.get('/store/:sellerId', storeController.index);
 //app.get('/bouquet', bouquetController.addToBouquet);
 
 
@@ -56,9 +63,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(mainRouter);
 app.use(userRouter);
 app.use(buyerRouter);
 app.use(ordersRouter);
+app.use(searchRouter);  // 가게 검색 라우터
+app.use(storeRouter);
+
 
 
 
@@ -75,14 +86,12 @@ const noticesController = require('./controllers/seller/notices.controller');
 const ordersController = require('./controllers/seller/orders.controller'); 
 const flowersController = require('./controllers/seller/flowers.controller'); 
 
-const noticesController = require('././controllers/seller/notices.controller');
-const ordersController = require('././controllers/seller/orders.controller'); // 주문 컨트롤러 추가
-const flowersController = require('././controllers/seller/flowers.controller'); // 상품 컨트롤러 추가
+
 
 
 // 미들웨어 등록
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+//app.use(express.static('public'));
 //app.use(ensureAuthenticated);
 
 
@@ -137,7 +146,7 @@ app.delete('/seller/notices/:noticeId', noticesController.deleteNotice);
 
 // 판매자 마이페이지 - 매장페이지
 // 판매자 매장 페이지 조회
-app.get('/seller/store', storeController.getStorePage);
+//app.get('/seller/store', storeController.getStorePage);
 
 
 app.listen(app.get('port'), () => {

@@ -7,6 +7,10 @@ module.exports = {
       const buyerId = req.session.user.id;
       const sellerId = req.session.sellerId;
 
+      // if (!buyerId) {
+      //   return res.redirect('/user/login'); // buyerId 값이 없을 경우 리다이렉트
+      // }
+
       // 꽃다발 생성
       const bouquetId = await bouquetModel.createBouquet(buyerId);
       console.log("부케아이디확인: " + bouquetId)
@@ -21,7 +25,8 @@ module.exports = {
       res.redirect(`/store/${sellerId}`);
     } catch (err) {
       console.error(err);
-      res.status(500).send('Error adding flower to bouquet');
+      res.redirect('/user/login');
+      //res.status(500).send('Error adding flower to bouquet');
     }
   }
 };
