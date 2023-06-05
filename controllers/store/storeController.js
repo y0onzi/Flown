@@ -44,7 +44,7 @@ module.exports = {
         } catch(err){
             console.error(err);
         }
-    },
+    }
 
     // saveSellerIdToSession: (sellerId) => {
     //     //const sellerId = req.params.sellerId; // 판매자 ID 값

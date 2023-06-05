@@ -33,19 +33,10 @@ exports.getSearchResults = async (req, res) => {
     const results = await searchModel.getSearchResults(city, district, neighborhood);
     console.log("컨트롤러: "+ results[0]);
 
+    //session 에서 가져오는거
 
-    // 검색 결과가 있을 때
-    // const id = req.session.user.id;
-
-    //     const buyer = await buyerDao.getBuyer(id);
-    //     res.render('buyer/buyerMypage', { buyer: buyer });
-
-    // if(results.length > 0) {
-    //   const sellerId = results[0].seller_id;
-    //   req.session.sellerId = sellerId;
-    // }
-
-    const seller_id = req.session.
+    // const seller_id = req.session.seller_id;
+    // console.log("판매자 세션 아이디" + seller_id);
 
     res.render('map/searchResultsView', { searchResults: results[0] });
 
