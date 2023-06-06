@@ -51,5 +51,21 @@ module.exports = {
       console.error(err);
       res.status(500).send('Error displaying cart');
     }
+  },
+
+  //꽃다발 꽃 삭제
+  deleteBouquetItems: async (req, res) => {
+    try {
+      //bouquetId, flowerId 받아오기
+      const bouquetId = req.params.bouquetId;
+      const flowerId = req.params.flowerId;
+
+      await bouquetModel.deleteBouquetItems(bouquetId, flowerId);
+      res.redirect('/bouquet');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error delete flower');
+    }
   }
+
 };
