@@ -51,6 +51,7 @@ const userController = {
             errors: errorMessages,
             formData: req.body
           });
+        return;
       }
 
       const { id, password, storeName, ownerName, businessNumber, storePhoneNumber,
