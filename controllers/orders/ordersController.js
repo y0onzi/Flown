@@ -32,7 +32,9 @@ const ordersController = {
 
             console.log(req.body);
             await ordersDao.createOrdersheet(buyerId, user, name, pickupDate, phoneNumber, memo, id, totalPrice);
+            
             res.render('user/loginSuccess');
+
         } catch (error) {
             console.log(error);
             res.render('error', { message: '오류가 발생했습니다.' });
