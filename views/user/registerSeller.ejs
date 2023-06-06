@@ -46,8 +46,8 @@
         <label for="exampleInputPassword1">주소</label>
         <br>
         <input type="text" class="form-control" name="address_city" value="<%= (typeof formData !== 'undefined' && formData.address_city) ? formData.address_city : '' %>" placeholder="시/도" required>
-        <input type="text" class="form-control" name="address_district" value="<%= (typeof formData !== 'undefined' && formData.address_district) ? formData.address_district : '' %>" placeholder="구/군" required>
-        <input type="text" class="form-control" name="address_dong" value="<%= (typeof formData !== 'undefined' && formData.address_dong) ? formData.address_dong : '' %>" placeholder="동/읍/면" required>
+        <input type="text" class="form-control" name="address_district" value="<%= (typeof formData !== 'undefined' && formData.address_district) ? formData.address_district : '' %>" placeholder="시/군/구" required>
+        <input type="text" class="form-control" name="address_dong" value="<%= (typeof formData !== 'undefined' && formData.address_dong) ? formData.address_dong : '' %>" placeholder="읍/면/동" required>
       </div>
       <div class="form-group mb-3">
         <label for="exampleInputPassword1">주소(상세주소)</label>
