@@ -91,6 +91,17 @@ module.exports = {
       console.error(error);
       throw new Error("Error getting bouquet items");
     }
+  },
+  
+    deleteBouquetItems: async(bouquet_id, flower_id)=>{
+      try{
+        let sql = "DELETE FROM bouquet_configuration WHERE bouquet_id=? AND flower_id=?";
+        const [rows] = await db.query(sql,[bouquet_id, flower_id])
+      }catch(error){
+        console.error(error);
+        throw new Error("Error delete bouquet items");
+      }
+    }
   }
 
 };
