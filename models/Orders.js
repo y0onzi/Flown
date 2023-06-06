@@ -10,12 +10,13 @@ const Orders = {
         return rows;
     },
 
-    createOrdersheet: async (buyerId, user, name, pickupDate, phoneNumber, memo, id, totalprice) => {
+    createOrdersheet: async (buyerId, user, name, pickupDate, phoneNumber, memo, id, totalPrice) => {
         //구매자아이디, 판매자아이디, 이름, 주문일자, 픽업일자, 폰넘버, 메모
         let sql = "INSERT INTO FLOWN.order values(0,?,?,?,?,?,?,?,?)";
         const [ rows ]  = await db.query(sql,[buyerId, user, name, new Date(), pickupDate, 'waiting', phoneNumber, memo]);
         let sql2 = "INSERT INTO FLOWN.orderItem VALUES(0,?,?,?)";
-        await db.query(sql2, [rows.insertId, id, totalprice]);
+        console.log("===================/n 주문 모델 : " + totalPrice)
+        await db.query(sql2, [rows.insertId, id, totalPrice]);
        //console.log(rows.insertId);
     }
 }

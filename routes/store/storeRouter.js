@@ -22,7 +22,7 @@ router.post('/bouquet/addToBouquet', bouquetController.addToBouquet);
 //꽃다발 조회 페이지
 router.get('/bouquet', bouquetController.showBouquet);
 
-
+router.delete('/bouquet/:bouquetId/:flowerId', bouquetController.deleteBouquetItems);
 
 
 module.exports = router;

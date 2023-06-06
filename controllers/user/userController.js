@@ -64,7 +64,7 @@ const userController = {
 
       // 유저 등록
       userDao.registerSeller(id, hashedPassword, storeName, ownerName, businessNumber, storePhoneNumber, address_city, address_district, address_dong, address_detail);
-      return res.status(200).json();
+      res.redirect('/user/loginSuccess');
     } catch (error) {
       res.render('error', { message: "회원가입 오류가 발생했습니다." });
     }

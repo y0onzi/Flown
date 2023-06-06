@@ -10,7 +10,7 @@ module.exports = {
             //console.log("1스토어 부케 판매자아이디 세션 확인: " + sellerId);
             req.session.sellerId = sellerId;
             //이후에 꽃다발 생성 + 주문 생성시 필요!!  
-            //console.log("2스토어 부케 판매자아이디 세션 확인: " + sellerId);
+            console.log("==2스토어 부케 판매자아이디 세션 확인: " + sellerId);
             //saveSellerIdToSession(sellerId);
             
             const store = await storeModel.getStoreById(sellerId);
