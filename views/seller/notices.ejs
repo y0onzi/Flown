@@ -28,14 +28,15 @@
     <% } %>
   </tbody>
 </table>
-<button onclick="showAddForm()" id="addButton">등록</button>
+<button onclick="showAddForm()" id="addButton" class="btn btn-primary mb-3">등록</button>
 <!-- 공지사항 등록 폼 -->
 <div id="add-form" style="display: none;">
-  <h2>공지사항 등록</h2>
+  <h2 class="mb-3">공지사항 등록</h2>
   <form id="add-notice-form" method="POST">
-    <input type="text" name="title" placeholder="제목" required>
-    <textarea name="content" placeholder="내용" required></textarea>
-    <button type="submit">완료</button>
+    <input type="text" name="title" class="form-control mb-3" placeholder="제목" required>
+    <textarea name="content" class="form-control" placeholder="내용" required></textarea>
+    <br>
+    <button type="submit" class="btn btn-primary">완료</button>
   </form>
 </div>
 
