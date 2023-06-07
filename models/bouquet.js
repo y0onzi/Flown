@@ -3,23 +3,24 @@ const validation = require('../util/validationUtils');
 
 
 module.exports = {
-  getExistingBouquet: async (buyerId, sellerId) => {
+  getBouquetById: async (bouquetId, buyerId, sellerId) => {
     try {
-      const query = 'SELECT bouquet_id, is_new FROM bouquet WHERE buyer_id = ? AND seller_id = ?';
-      const [rows] = await db.query(query, [buyerId, sellerId]);
-      return rows[0]; // 첫 번째 행의 데이터를 반환 (기존 꽃다발 정보)
+      const query = 'SELECT bouquet_id, is_new FROM bouquet WHERE bouquet_id = ? ';
+      const [rows] = await db.query(query, [bouquetId]);
+      return rows[0]; // 첫 번째 행의 데이터를 반환 (꽃다발 정보)
     } catch (err) {
       console.error(err);
     }
   },
-  createBouquet: async (buyerId, sellerId) => {
+
+  createBouquet: async (buyerId, sellerId, isNewValue) => {
     try {
       // 기존 꽃다발 조회
       //const existingBouquet = await this.getExistingBouquet(buyerId, sellerId);
 
       // 꽃다발 테이블에 꽃다발 생성
-      const createBouquetQuery = 'INSERT INTO bouquet (buyer_id, seller_id, price, is_new) VALUES (?, ?, 0, 1)';
-      await db.query(createBouquetQuery, [buyerId, sellerId]);
+      const createBouquetQuery = 'INSERT INTO bouquet (buyer_id, seller_id, price, is_new) VALUES (?, ?, 0, ?)';
+      await db.query(createBouquetQuery, [buyerId, sellerId, isNewValue]);
       console.log('꽃다발 초기화 완료!');
 
       // 생성된 꽃다발ID 조회
@@ -58,7 +59,7 @@ module.exports = {
       await db.query(addToBouquetQuery, [bouquetId, flowerId, flowerAmount]);
 
       //꽃다발 구성에 꽃 추가하면, 꽃다발의 is_new 속성을 false로 업데이트하기
-      const updateBouquetQuery = 'UPDATE bouquet SET is_new = 0 WHERE bouquet_id = ?';
+      const updateBouquetQuery = 'UPDATE bouquet SET is_new = 1 WHERE bouquet_id = ?';
       await db.query(updateBouquetQuery, [bouquetId]);
 
 
@@ -102,6 +103,22 @@ module.exports = {
         throw new Error("Error delete bouquet items");
       }
     }
+
   }
 
-// };
+
+  
+};
+
+
+// getExistingBouquet: async (buyerId, sellerId) => {
+//   try {
+//     //const query = 'SELECT bouquet_id, is_new FROM bouquet WHERE buyer_id = ? AND seller_id = ?';
+//     const query = 'SELECT bouquet_id, is_new FROM bouquet WHERE buyer_id = ? AND seller_id = ?';
+//     const [rows] = await db.query(query, [buyerId, sellerId]);
+//     return rows; // 첫 번째 행의 데이터를 반환 (기존 꽃다발 정보)
+//   } catch (err) {
+//     console.error(err);
+//   }
+// },
+

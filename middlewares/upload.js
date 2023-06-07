@@ -1,6 +1,6 @@
-const multer = require('multer');
+// middlewares/upload.js
 
-// Multer 설정
+const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/'); // 파일이 저장될 경로
@@ -12,6 +12,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
-
+//const upload = multer({ storage });
+const upload = multer({ dest: 'uploads/' });
 module.exports = upload;
