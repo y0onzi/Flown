@@ -6,4 +6,3 @@ exports.showMain = (req, res) => {
 exports.showAbout = (req, res) => {
     res.render('main/about');
 }
-

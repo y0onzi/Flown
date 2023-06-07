@@ -4,32 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seller My Page</title>
+  <title>Seller MyPage</title>
+ 
   <style>
-    /* Header Styling */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background-color: #f2f2f2;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .logout-button,
-    .my-button {
-      padding: 5px 10px;
-      margin-left: 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: #f2f2f2;
-      cursor: pointer;
-    }
-
+    
     /* Profile Styling */
     .profile {
       text-align: center;
@@ -59,228 +37,64 @@
       display: flex;
       justify-content: center;
       margin: 20px;
+      flex-wrap: wrap;
     }
 
     .button-group button {
-      padding: 10px 20px;
+      padding: 10px 40px;
       margin: 0 10px;
-      border: none;
+      border: 1px blue;
       border-radius: 5px;
       background-color: #f2f2f2;
       cursor: pointer;
+      white-space: nowrap;
+      flex: 1 0 auto;
     }
 
-    /* Order List Styling */
-    .order-list {
+    .updateProfile-button {
+      text-align: center;
       margin: 20px;
     }
 
-    .order-list table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .order-list th,
-    .order-list td {
-      padding: 10px;
-      text-align: center;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .order-list th {
-      background-color: #f2f2f2;
-    }
-
-    .order-list .order-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    /* Popup Styling */
-    .popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .popup-content {
-      background-color: #fff;
-      padding: 20px;
+    .updateProfile-button button {
+      padding: 10px 20px;
+      margin: 0;
+      border: none;
       border-radius: 5px;
+      background-color:#f2f2f2;
+      cursor: pointer;
     }
 
-    .popup-content textarea {
-      width: 100%;
-      height: 200px;
-      resize: none;
-    }
+  
   </style>
-</head>
-
-<body>
-  <header>
-    <div class="logo">FLOWN</div>
-    <div>
-      <button class="logout-button">Logout</button>
-      <button class="my-button">My</button>
-    </div>
-  </header>
 
   <div class="profile">
-    <img src="<%= profileImageUrl %>" alt="Profile Image">
-    <h2 class="store-name"><%= storeName %></h2>
-    <p class="store-address"><%= storeAddress %></p>
-    <p class="store-phone"><%= storePhoneNumber %></p>
+    <% if (seller) { %>
+    <h2 class="store-name"><%= seller.storeName %></h2>
+    <p class="store-address">
+      <%= seller.address_city %> <%= seller.address_district %> <%= seller.address_dong %> <%= seller.address_detail %> 
+    </p>
+    <p class="store-phone"><%= seller.storePhoneNumber %></p>
+    <% } %>
   </div>
+
+ 
+ 
 
   <div class="button-group">
-    <button>Edit Profile</button>
-    <select name="operatingStatus">
-      <option value="open">Operating</option>
-      <option value="preparation">Preparation</option>
-      <option value="closed">Closed</option>
-    </select>
-    <button class="product-management-button">Product Management</button>
-    <button class="order-confirmation-button">Order Confirmation</button>
-    <button class="notice-button">Notice</button>
-    <button class="store-page-button"><a href="/store/:sellerId">매장페이지 조회</a></button>
+    <button class="product-management-button">
+      <a href="/seller/flowers">상품관리</a>
+    </button>
+    <button class="order-confirmation-button">
+      <a href="/seller/sellerOrders">주문확인</a>
+    </button>
+    <button class="notice-button">
+      <a href="/seller/notices">공지사항</a>
+    </button>
+    <button class="store-page-button">
+      <a href="/store/:sellerId">매장페이지</a></button>
   </div>
 
-  <div class="order-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Order Number</th>
-          <th>Order Amount</th>
-          <th>Desired Delivery Date</th>
-          <th>Order Form</th>
-          <th>Order Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% orders.forEach(order => { %>
-        <tr>
-          <td><%= order.orderNumber %></td>
-          <td><%= order.orderAmount %></td>
-          <td><%= order.desiredDeliveryDate %></td>
-          <td>
-            <button class="view-button" data-order-id="<%= order.orderId %>">View</button>
-          </td>
-          <td>
-            <select class="status-select" data-order-id="<%= order.orderId %>">
-              <option value="accept">Accept</option>
-              <option value="reject">Reject</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </select>
-          </td>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="popup">
-    <div class="popup-content">
-      <textarea id="order-form-textarea" readonly></textarea>
-      <button class="close-popup-button">Close</button>
-    </div>
-  </div>
-
-  <script>
-    // View Order Form Popup
-    const viewButtons = document.querySelectorAll('.view-button');
-    const orderFormTextarea = document.getElementById('order-form-textarea');
-    const popup = document.querySelector('.popup');
-    const closePopupButton = document.querySelector('.close-popup-button');
-
-    viewButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const orderId = button.dataset.orderId;
-        const orderForm = getOrderForm(orderId); // Function to get the order form from server
-
-        orderFormTextarea.value = orderForm;
-        popup.style.display = 'flex';
-      });
-    });
-
-    closePopupButton.addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
-
-    // Update Order Status
-    const statusSelects = document.querySelectorAll('.status-select');
-
-    statusSelects.forEach(select => {
-      select.addEventListener('change', () => {
-        const orderId = select.dataset.orderId;
-        const status = select.value;
-
-        updateOrderStatus(orderId, status); // Function to update the order status in the server
-      });
-    });
-
-    // Logout Button
-    const logoutButton = document.querySelector('.logout-button');
-    logoutButton.addEventListener('click', () => {
-      // Logout logic
-    });
-
-    // My Button
-    const myButton = document.querySelector('.my-button');
-    myButton.addEventListener('click', () => {
-      // My button logic
-    });
-
-    // Edit Profile Button
-    const editProfileButton = document.querySelector('.edit-profile-button');
-    editProfileButton.addEventListener('click', () => {
-      // Edit profile button logic
-    });
-
-    // Product Management Button
-    const productManagementButton = document.querySelector('.product-management-button');
-    productManagementButton.addEventListener('click', () => {
-      // Product management button logic
-    });
-
-    // Order Confirmation Button
-    const orderConfirmationButton = document.querySelector('.order-confirmation-button');
-    orderConfirmationButton.addEventListener('click', () => {
-      // Order confirmation button logic
-    });
-
-    // Notice Button
-    const noticeButton = document.querySelector('.notice-button');
-    noticeButton.addEventListener('click', () => {
-      // Notice button logic
-    });
-
-    // Store Page Button
-    const storePageButton = document.querySelector('.store-page-button');
-    storePageButton.addEventListener('click', () => {
-      // Store page button logic
-    });
-
-    // Function to get the order form from the server
-    function getOrderForm(orderId) {
-      // Send request to the server to fetch the order form based on the orderId
-      // Return the order form
-    }
-
-    // Function to update the order status in the server
-    function updateOrderStatus(orderId, status) {
-      // Send request to the server to update the order status based on the orderId and status
-      // Update the UI accordingly
-    }
-  </script>
 </body>
 
 </html>
