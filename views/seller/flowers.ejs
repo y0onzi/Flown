@@ -2,9 +2,21 @@
 <html>
 <head>
   <title>상품관리</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body>
-  <h1>상품관리</h1>
+  <h1 class="mb-3">상품관리</h1>
   <table>
     <tr>
       <th>이름</th>
@@ -23,14 +35,14 @@
     <% }); %>
   </table>
 
-  <button onclick="showAddForm()" id="addButton">추가</button>
+  <button onclick="showAddForm()" class="btn btn-primary mt-3" id="addButton">추가하기</button>
   <!-- 상품 등록 폼 -->
   <div id="add-form" style="display: none;">
-    <h2>상품 등록</h2>
+    <h2 class="mb-3 mt-3">상품 등록</h2>
     <form id="add-flower-form" method="POST" enctype="multipart/form-data">
-      <input type="text" name="name" placeholder="Name" required>
-      <input type="text" name="price" placeholder="Price" required>
-      <select name="color" required>
+      <input type="text" class="form-control mb-3" name="name" placeholder="Name" required>
+      <input type="text" class="form-control mb-3" name="price" placeholder="Price" required>
+      <select name="color" class="form-select mb-3" required>
         <option value="">Choose a color</option>
         <option value="red">빨강</option>
         <option value="orange">주황</option>
@@ -42,9 +54,10 @@
         <option value="black">검정</option>
         <option value="pink">분홍</option>
       </select>
-      <input type="file" name="photo">
+      <input type="file" name="photo" class="mb-3">
       <input type="checkbox" name="soldOut"> 품절
-      <button type="submit">완료</button>
+      <br>
+      <button type="submit" class="btn btn-primary">완료</button>
     </form>
   </div>
 
