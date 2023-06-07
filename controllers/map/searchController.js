@@ -15,7 +15,7 @@ exports.renderSearchPage = (req, res) => {
 
 
 
-  res.render('searchView', { cities, districts, neighborhoods });
+  res.render('map/searchView', { cities, districts, neighborhoods });
 };
 
 exports.getSearchResults = async (req, res) => {
@@ -32,7 +32,14 @@ exports.getSearchResults = async (req, res) => {
   try {
     const results = await searchModel.getSearchResults(city, district, neighborhood);
     console.log("컨트롤러: "+ results[0]);
-    res.render('searchResultsView', { seller_info: results[0] });
+
+    //session 에서 가져오는거
+
+    // const seller_id = req.session.seller_id;
+    // console.log("판매자 세션 아이디" + seller_id);
+
+    res.render('map/searchResultsView', { searchResults: results[0] });
+
    
   } catch (err) {
     console.error('검색 결과 조회 오류:', err);

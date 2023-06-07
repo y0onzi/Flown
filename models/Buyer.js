@@ -27,7 +27,7 @@ const Buyer = {
     },
 
     getMyOrderDetail: async(id)=>{
-        let sql = "SELECT name, color, price FROM flower WHERE flower_id = (SELECT flower_id FROM FLOWN.orderItem i INNER JOIN bouquet_configuration c ON i.bouquet_id = c.bouquet_id WHERE i.order_id=?);";
+        let sql = "SELECT name, color, price FROM flower WHERE flower_id IN (SELECT flower_id FROM FLOWN.orderItem i INNER JOIN bouquet_configuration c ON i.bouquet_id = c.bouquet_id WHERE i.order_id=?);";
         const [rows] = await db.query(sql,[id]);
         return rows;
     },

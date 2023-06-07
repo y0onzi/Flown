@@ -24,7 +24,7 @@
         <th>수량</th>
         <th>가격</th>
       </tr>
-      <% orders.forEach(function(order) { %>
+      <% orders.items.forEach(function(order) { %>
         <tr>
           <td><%= order.name %></td>
           <td><%= order.flowerAmount %></td>
@@ -32,7 +32,7 @@
         </tr>
       <% }); %>
       <tr>
-        <td>Total Price: <%= orders[0].totalprice %> 원</td>
+        <td>Total Price: <%= orders.totalPrice %> 원</td>
         <td colspan="2"></td>
       </tr>
     </table>
@@ -51,9 +51,9 @@
           <label>사장님께 메모 남기기</label>
           <input type="text" class="form-control" name="memo">
         </div>
-        <input type="hidden" name="user" id="user" value="<%= orders[0].seller_id %>"/>
-        <input type="hidden" name="id" id="id" value="<%= id %>"/>
-        <input type="hidden" name="totalprice" id="totalprice" value="<%= orders[0].totalprice %>"/>
+        <input type="hidden" name="user" id="user" value="<%= sellerId %>"/>
+        <input type="hidden" name="id" id="id" value="<%= bouquetId %>"/>
+        <input type="hidden" name="totalPrice" id="totalPrice" value="<%= orders.totalPrice %>"/>
 
         <button type="submit" class="btn btn-primary form-control">주문 신청하기</button>
       </form>
