@@ -7,7 +7,7 @@ const layouts= require("express-ejs-layouts");
 app.use(express.static('public'));
 
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 
 const database = require('./database/database');
 
