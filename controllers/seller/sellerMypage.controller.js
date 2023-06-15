@@ -13,7 +13,7 @@ exports.getSellerMypage = async (req, res) => {
     const [results] = await connection.query(query);
 
     const seller = results[0];
-    res.render('seller/sellerMypage', { seller });
+    res.render('seller/sellerMypage', { seller, sellerId }); // 매장페이지 연결을 위한 sellerId 추가
 
     connection.release();
   } catch (error) {

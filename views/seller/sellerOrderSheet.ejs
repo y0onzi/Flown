@@ -24,6 +24,7 @@
       <th>꽃 이름</th>
       <th>꽃 가격</th>
       <th>꽃 수량</th>
+      <th>합계</th>
       <th>주문자 이름</th>
       <th>주문자 연락처</th>
       <th>메모</th>
@@ -33,9 +34,10 @@
         <td><%= order.name %></td>
         <td><%= order.price %></td>
         <td><%= order.flowerAmount %></td>
+        <td><%= order.bouquetPrice %></td>
         <td><%= order.receiverName %></td>
         <td><%= order.receiverPhoneNumber %></td>
-        <td><%= order.memo %></td>
+        <td><testarea><%= order.memo %></testarea></td>
       </tr>
     <% }); %>
   </table>
