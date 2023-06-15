@@ -5,18 +5,14 @@ const ordersController = {
 
     getOrdersheet: async (req, res) => {
         try {
-            //const id = req.params.id;
-            //const rows = await ordersDao.getOrdersheet(id);
-            
-            //console.log(req.body);
             const bouquetId = req.session.bouquetId;
             const sellerId = req.session.sellerId;
-            console.log("=======주문컨트롤러=======\n");
-            console.log(bouquetId);
-            console.log(sellerId);
+            //console.log("=======주문컨트롤러=======\n");
+            //console.log(bouquetId);
+            //console.log(sellerId);
             const rows = await bouquetModel.getBouquetItems(bouquetId, sellerId);
 
-            console.log("=======주문컨트롤러=======/n" + rows);
+            //console.log("=======주문컨트롤러=======/n" + rows);
             //res.render('orders/orderSheet', { orders: rows, id: id });
             res.render('orders/orderSheet', { orders: rows, sellerId, bouquetId});
         } catch (error) {

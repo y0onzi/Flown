@@ -15,7 +15,7 @@ const Orders = {
         let sql = "INSERT INTO FLOWN.order values(0,?,?,?,?,?,?,?,?)";
         const [rows] = await db.query(sql, [buyerId, user, name, new Date(), pickupDate, 'waiting', phoneNumber, memo]);
         let sql2 = "INSERT INTO FLOWN.orderItem VALUES(0,?,?,?)";
-        console.log("===================/n 주문 모델 : " + totalPrice)
+       // console.log("===================/n 주문 모델 : " + totalPrice)
         await db.query(sql2, [rows.insertId, bouquetId, totalPrice]);
         //console.log(rows.insertId);
 
