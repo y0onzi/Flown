@@ -15,5 +15,4 @@ const validateId = async (tableName, idName, id) => {
 
 module.exports = {
   validateId
-  // 다른 모델 메서드들 추가 
 };

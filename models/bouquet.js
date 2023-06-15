@@ -107,10 +107,6 @@ module.exports = {
   }
 
 
-  
-};
-
-
 // getExistingBouquet: async (buyerId, sellerId) => {
 //   try {
 //     //const query = 'SELECT bouquet_id, is_new FROM bouquet WHERE buyer_id = ? AND seller_id = ?';
