@@ -34,7 +34,7 @@ exports.sellerGetOrderSheet = async (req, res) => {
     const orderId = req.params.orderId;
 
     const query = `
-      SELECT oi.order_id, f.name, f.price, bc.flowerAmount, oi.bouquetPrice, o.orderDate, o.pickUpDate, o.receiverName, o.receiverPhoneNumber, o.memo, o.orderStatus 
+      SELECT oi.order_id, f.name, f.price, bc.flowerAmount, (f.price * bc.flowerAmount) AS bouquetPrice, o.orderDate, o.pickUpDate, o.receiverName, o.receiverPhoneNumber, o.memo, o.orderStatus  
       FROM orderItem oi
       INNER JOIN \`order\` o ON oi.order_id = o.order_id
       INNER JOIN bouquet_configuration bc ON bc.bouquet_id = oi.bouquet_id
